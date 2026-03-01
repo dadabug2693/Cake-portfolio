@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pastry Kitchen</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --accent: #a01f3f;
+    --accent2: #d4708a;
+    --bg: #fdf7f8;
+    --dark: #1e0810;
+    --card: #fff;
+    --text: #1e0810;
+    --muted: #8a5060;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Georgia', 'Times New Roman', serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+    background: rgba(250,247,244,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #ede8e2;
+  }
+  .logo { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.02em; color: var(--dark); }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; }
+  nav a { color: var(--muted); text-decoration: none; font-family: 'Helvetica Neue', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem 3rem 4rem 4rem;
+  }
+  .hero-label {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-label::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  h1 {
+    font-size: clamp(2.8rem, 6vw, 6rem);
+    font-weight: 700; line-height: 1;
+    letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    color: var(--dark);
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+  .hero-sub {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.95rem; color: var(--muted); max-width: 380px;
+    line-height: 1.7; margin-bottom: 2.5rem;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--accent); color: #fff;
+    padding: 0.9rem 2rem; font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 600; font-size: 0.8rem;
+    letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(196,120,58,0.35); }
+  .btn-arrow { transition: transform 0.2s; }
+  .btn:hover .btn-arrow { transform: translateX(4px); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+  }
+  .hero-right img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .hero-badge {
+    position: absolute; bottom: 2rem; left: 2rem;
+    background: rgba(250,247,244,0.95);
+    padding: 1rem 1.5rem;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  .hero-badge .num { font-size: 2rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .hero-badge .label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  /* GALLERY */
+  .gallery-section { padding: 6rem 3rem; }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700; letter-spacing: -0.02em; color: var(--dark);
+  }
+  .section-sub {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.9rem; color: var(--muted); max-width: 380px;
+    line-height: 1.6; margin-bottom: 2.5rem;
+  }
+
+  /* FILTERS */
+  .filters { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 0.45rem 1.2rem; font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    border: 1px solid #ddd; background: transparent; color: var(--muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(196,120,58,0.06);
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+  }
+  .card {
+    position: relative; overflow: hidden; cursor: pointer;
+    background: var(--card);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,18,8,0.12); }
+  .card:nth-child(1) { grid-column: span 7; }
+  .card:nth-child(2) { grid-column: span 5; }
+  .card:nth-child(3) { grid-column: span 4; }
+  .card:nth-child(4) { grid-column: span 4; }
+  .card:nth-child(5) { grid-column: span 4; }
+  .card:nth-child(6) { grid-column: span 5; }
+  .card:nth-child(7) { grid-column: span 7; }
+
+  .card-img {
+    width: 100%; height: 280px;
+    object-fit: cover; display: block;
+    transition: transform 0.5s;
+  }
+  .card:nth-child(1) .card-img,
+  .card:nth-child(7) .card-img { height: 340px; }
+  .card:hover .card-img { transform: scale(1.04); }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,18,8,0.78) 0%, transparent 55%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 1.5rem;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover .card-overlay { opacity: 1; }
+  .card-tag {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 0.3rem;
+  }
+  .card-title { font-size: 1rem; font-weight: 700; color: #fff; }
+
+  /* ABOUT STRIP */
+  .about-strip {
+    background: var(--dark); color: #fff;
+    padding: 5rem 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .about-strip h3 {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .about-strip h3 em { color: var(--accent2); font-style: italic; }
+  .about-strip p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.65);
+  }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .pillar { border-left: 2px solid var(--accent); padding-left: 1rem; }
+  .pillar-title {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 0.4rem;
+  }
+  .pillar p { font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid #ede8e2;
+    padding: 2.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  .footer-logo { font-size: 1rem; font-weight: 700; color: var(--dark); font-family: Georgia, serif; }
+  .footer-logo span { color: var(--accent); }
+  .social-links { display: flex; gap: 2rem; }
+  .social-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.78rem;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s;
+  }
+  .social-links a:hover { color: var(--accent); }
+  .footer-copy { color: var(--muted); font-size: 0.75rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-label { animation: fadeUp 0.7s ease 0.1s forwards; opacity: 0; }
+  h1 { animation: fadeUp 0.7s ease 0.25s forwards; opacity: 0; }
+  .hero-sub { animation: fadeUp 0.7s ease 0.4s forwards; opacity: 0; }
+  .btn { animation: fadeUp 0.7s ease 0.5s forwards; opacity: 0; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 50vw; }
+    .about-strip { grid-template-columns: 1fr; gap: 2rem; }
+    nav { padding: 1rem 1.5rem; }
+    .gallery-section, .about-strip, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero-left { padding: 3rem 1.5rem; }
+    .card:nth-child(n) { grid-column: span 12; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">The Pastry <span>Kitchen</span></div>
+  <div class="nav-links">
+    <a href="#work">Gallery</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-label">Custom Cakes & Cookies</div>
+    <h1>Baking<br>from the<br><em>Heart.</em></h1>
+    <p class="hero-sub">Fresh ingredients, no preservatives, sourced locally — and crafted to make the grandmothers who taught us proud.</p>
+    <a href="#work" class="btn">See Our Work <span class="btn-arrow">→</span></a>
+  </div>
+  <div class="hero-right">
+    <img src="https://static.wixstatic.com/media/d2a969_58b452fde3fe4d4e9083d8f94ab28a95~mv2.jpeg" alt="Hero cake">
+    <div class="hero-badge">
+      <div class="num">25+</div>
+      <div class="label">Cake Designs</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="work">
+  <div class="section-header">
+    <h2>Our Creations</h2>
+  </div>
+  <p class="section-sub">Every cake and cookie is made to order — designed with an eye for detail and the taste of homemade.</p>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filter(this,'all')">All</button>
+    <button class="filter-btn" onclick="filter(this,'cake')">Cakes</button>
+    <button class="filter-btn" onclick="filter(this,'cookie')">Cookies</button>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="card" data-cat="cake">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_ddbb81159f63416a807764a1def6c5a2~mv2.jpeg" alt="Cake">
+      <div class="card-overlay">
+        <div class="card-tag">Cakes</div>
+        <div class="card-title">Custom Layer Cake</div>
+      </div>
+    </div>
+    <div class="card" data-cat="cake">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_1d469aff35b54f4b9b08eece2da12fd1~mv2.jpeg" alt="Cake">
+      <div class="card-overlay">
+        <div class="card-tag">Cakes</div>
+        <div class="card-title">Celebration Cake</div>
+      </div>
+    </div>
+    <div class="card" data-cat="cake">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_844f08b9f72640508c23a3d2a2076a3e~mv2.jpeg" alt="Cake">
+      <div class="card-overlay">
+        <div class="card-tag">Cakes</div>
+        <div class="card-title">Tiered Design</div>
+      </div>
+    </div>
+    <div class="card" data-cat="cake">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_7be3f0f8ea40484ba881e115b3abdeee~mv2.jpeg" alt="Cake">
+      <div class="card-overlay">
+        <div class="card-tag">Cakes</div>
+        <div class="card-title">Floral Cake</div>
+      </div>
+    </div>
+    <div class="card" data-cat="cake">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_076576bf2f5e447b83ead848bedd830a~mv2.jpeg" alt="Cake">
+      <div class="card-overlay">
+        <div class="card-tag">Cakes</div>
+        <div class="card-title">Birthday Cake</div>
+      </div>
+    </div>
+    <div class="card" data-cat="cookie">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_d6e19a85fbf6471bb73e790c5355cfb0~mv2.jpeg" alt="Cookies">
+      <div class="card-overlay">
+        <div class="card-tag">Cookies</div>
+        <div class="card-title">Decorated Cookies</div>
+      </div>
+    </div>
+    <div class="card" data-cat="cookie">
+      <img class="card-img" src="https://static.wixstatic.com/media/d2a969_9c671ad117f544028a387d03b75f33b7~mv2.jpeg" alt="Cookies">
+      <div class="card-overlay">
+        <div class="card-tag">Cookies</div>
+        <div class="card-title">Custom Cookie Set</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div>
+    <h3>Made with <em>love,</em><br>never shortcuts.</h3>
+    <p>At The Pastry Kitchen, every order is a labor of love. We source from local vendors, use only the freshest ingredients, and never take shortcuts — because the people who taught us to bake wouldn't accept anything less.</p>
+  </div>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-title">Fresh Ingredients</div>
+      <p>Only the best — no preservatives, no artificial additives, ever.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-title">Locally Sourced</div>
+      <p>We work with local vendors to keep it fresh and support our community.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-title">Made to Order</div>
+      <p>Every cake and cookie is crafted specifically for you.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-title">Eye for Detail</div>
+      <p>Beautiful designs that taste as good as they look.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">The Pastry <span>Kitchen</span></div>
+
+  <div class="footer-copy">© 2025 Pastry Kitchen Designs. All rights reserved.</div>
+</footer>
+
+<script>
+  function filter(btn, cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.card').forEach(card => {
+      const match = cat === 'all' || card.dataset.cat === cat;
+      card.style.display = match ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
