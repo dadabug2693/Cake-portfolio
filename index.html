@@ -43,8 +43,11 @@
   }
   .hero-image {
     overflow: hidden;
+    position: relative;
   }
   .hero-image video {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -154,10 +157,33 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* ─── MOBILE ─── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-image { height: 50vw; }
+
+    /* Stack hero vertically, drop the 100vh min so content isn't crushed */
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: unset;
+    }
+
+    /* Give the video panel a fixed aspect-ratio-friendly height */
+    .hero-image {
+      height: 60vw;       /* proportional on any phone width   */
+      min-height: 220px;  /* never gets tiny on narrow screens  */
+      max-height: 380px;  /* doesn't dwarf the content below    */
+    }
+
+    /* video fills its container via absolute positioning */
+    .hero-image video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
     .hero-content { padding: 3rem 1.5rem; }
     .brands-section { padding: 4rem 1.5rem; }
     .brands-grid { grid-template-columns: 1fr; }
