@@ -44,7 +44,7 @@
   .hero-image {
     overflow: hidden;
   }
-  .hero-image img {
+  .hero-image video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -174,7 +174,9 @@
 
 <section class="hero">
   <div class="hero-image">
-    <img src="images/pk-hero.jpg" alt="Pastry Kitchen Designs">
+    <video autoplay loop muted playsinline poster="images/pk-hero.jpg">
+      <source src="images/pk-hero.mp4" type="video/mp4">
+    </video>
   </div>
   <div class="hero-content">
     <div class="hero-label">A Creative Collective</div>
