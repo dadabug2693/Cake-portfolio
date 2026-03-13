@@ -43,15 +43,11 @@
     align-items: center; justify-content: center;
     text-align: center; padding: 6rem 2rem 4rem;
     position: relative; overflow: hidden;
+    background: url('images/pk-hero.jpg') center center / cover no-repeat;
   }
   .hero-glow {
     position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse at 50% 40%, rgba(91,191,181,0.1) 0%, transparent 65%);
-  }
-  .hero-logo {
-    width: min(320px, 70vw); margin-bottom: 2.5rem;
-    border-radius: 12px;
-    animation: fadeUp 0.8s ease 0.1s forwards; opacity: 0;
+    background: rgba(10, 16, 24, 0.65);
   }
   .hero-label {
     font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
@@ -169,8 +165,6 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
-  <img class="hero-logo" src="https://i.imgur.com/placeholder.png" alt="Pastry Kitchen Designs Logo"
-    onerror="this.style.display='none'">
   <div class="hero-label">A Creative Collective</div>
   <h1>WHERE <em>CRAFT</em><br>MEETS <em>DESIGN</em></h1>
   <p class="hero-sub">Pastry Kitchen Designs is an umbrella of creative brands — from handcrafted baked goods to watercolor art and 3D design.</p>
