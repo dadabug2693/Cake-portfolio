@@ -26,9 +26,6 @@
     background: rgba(16,24,32,0.9); backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  .logo {
-    display: flex; align-items: center; gap: 0.75rem;
-  }
   .logo-text { font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
   .logo-text span { color: var(--teal); }
   nav a {
@@ -37,9 +34,10 @@
   }
   nav a:hover { color: var(--teal); }
 
-  /* HERO */
+  /* HERO — split layout */
   .hero {
-    min-height: 100vh; display: grid;
+    min-height: 100vh;
+    display: grid;
     grid-template-columns: 1fr 1fr;
     padding-top: 72px;
   }
@@ -47,14 +45,18 @@
     overflow: hidden;
   }
   .hero-image img {
-    width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;
-  }
-  .hero-glow {
-    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
   }
   .hero-content {
-    display: flex; flex-direction: column; justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 4rem 4rem 4rem 3.5rem;
+    background: var(--navy-dark);
   }
   .hero-label {
     font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
@@ -100,7 +102,6 @@
     font-size: 0.95rem; color: var(--muted); max-width: 440px;
     line-height: 1.7; margin-bottom: 3.5rem;
   }
-
   .brands-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
   }
@@ -118,7 +119,6 @@
     opacity: 0; transition: opacity 0.3s;
   }
   .brand-card:hover::before { opacity: 1; }
-
   .brand-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
   .brand-tag {
     font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
@@ -156,6 +156,9 @@
 
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-image { height: 50vw; }
+    .hero-content { padding: 3rem 1.5rem; }
     .brands-section { padding: 4rem 1.5rem; }
     .brands-grid { grid-template-columns: 1fr; }
     footer { padding: 2rem 1.5rem; flex-direction: column; align-items: flex-start; }
@@ -165,29 +168,27 @@
 <body>
 
 <nav>
-  <div class="logo">
-    <div class="logo-text">Pastry Kitchen <span>Designs</span></div>
-  </div>
+  <div class="logo-text">Pastry Kitchen <span>Designs</span></div>
   <a href="#brands">Our Brands</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-label">A Creative Collective</div>
-  <h1>WHERE <em>CRAFT</em><br>MEETS <em>DESIGN</em></h1>
-  <p class="hero-sub">Pastry Kitchen Designs is an umbrella of creative brands — from handcrafted baked goods to watercolor art and 3D design.</p>
-  <div class="scroll-hint">Explore our brands</div>
+  <div class="hero-image">
+    <img src="images/pk-hero.jpg" alt="Pastry Kitchen Designs">
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">A Creative Collective</div>
+    <h1>WHERE <em>CRAFT</em><br>MEETS <em>DESIGN</em></h1>
+    <p class="hero-sub">Pastry Kitchen Designs is an umbrella of creative brands — from handcrafted baked goods to watercolor art and 3D design.</p>
+    <div class="scroll-hint">Explore our brands</div>
+  </div>
 </section>
 
-<!-- BRANDS -->
 <section class="brands-section" id="brands">
   <div class="section-label">Our Brands</div>
   <h2>Three Crafts,<br>One Vision</h2>
   <p class="sub">Each brand under Pastry Kitchen Designs is rooted in the same philosophy — meticulous craft, genuine care, and a love for the handmade.</p>
-
   <div class="brands-grid">
-
     <a class="brand-card" href="pastry-kitchen.html">
       <div class="brand-icon">🎂</div>
       <div class="brand-tag">Baked Goods</div>
@@ -195,7 +196,6 @@
       <p>Custom cakes and cookies made with fresh ingredients, sourced locally, and crafted with heart.</p>
       <div class="brand-link">Visit Brand <span>→</span></div>
     </a>
-
     <div class="brand-card coming-soon">
       <div class="brand-icon">🎨</div>
       <div class="brand-tag">Fine Art Prints</div>
@@ -203,7 +203,6 @@
       <p>Original watercolor paintings and fine art prints — nature, botanicals, and beyond.</p>
       <div class="cs-badge">Coming Soon</div>
     </div>
-
     <div class="brand-card coming-soon">
       <div class="brand-icon">⬡</div>
       <div class="brand-tag">3D Design</div>
@@ -211,11 +210,9 @@
       <p>Custom 3D printed objects, functional art, and design prototypes.</p>
       <div class="cs-badge">Coming Soon</div>
     </div>
-
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-name">Pastry Kitchen <span>Designs</span></div>
   <div class="footer-copy">© 2025 Pastry Kitchen Designs. All rights reserved.</div>
