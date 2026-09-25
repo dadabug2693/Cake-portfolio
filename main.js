@@ -30,21 +30,6 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
   observer.observe(el);
 });
 
-// Gallery filters
-const filters = document.querySelectorAll('.filter');
-const items = document.querySelectorAll('.gallery li');
-filters.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const f = btn.dataset.filter;
-    filters.forEach((b) => {
-      const active = b === btn;
-      b.classList.toggle('is-active', active);
-      b.setAttribute('aria-pressed', String(active));
-    });
-    items.forEach((li) => li.classList.toggle('is-hidden', f !== 'all' && li.dataset.cat !== f));
-  });
-});
-
 // Lightbox
 const box = document.querySelector('.lightbox');
 const boxImg = box.querySelector('img');
@@ -52,7 +37,7 @@ const boxCap = box.querySelector('figcaption');
 let current = 0;
 
 const visibleTiles = () =>
-  [...document.querySelectorAll('.gallery li:not(.is-hidden) .tile')];
+  [...document.querySelectorAll('.gallery .tile')];
 
 function show(i) {
   const tiles = visibleTiles();
